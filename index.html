@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
   <head>
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
@@ -12,11 +13,60 @@
     <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
 
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <link rel="stylesheet" href="https://unpkg.com/@material-tailwind/html@latest/styles/material-tailwind.css" />
+    <script src="https://unpkg.com/@material-tailwind/html@latest/scripts/ripple.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiped-events@1.1.6/src/swiped-events.min.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const carousel = document.querySelector('.hero-carousel');
+        const slides = carousel.querySelectorAll('.carousel-slide'); // Select the slides directly
+        let currentSlideIndex = 0;
+
+        function updateCarousel() {
+          slides.forEach((slide, index) => {
+            slide.style.opacity = index === currentSlideIndex ? '1' : '0';
+            slide.style.zIndex = index === currentSlideIndex ? '10' : '1';
+          });
+        }
+
+        function nextSlide() {
+          currentSlideIndex = (currentSlideIndex + 1) % slides.length;
+          updateCarousel();
+        }
+
+        function prevSlide() {
+          currentSlideIndex = (currentSlideIndex - 1 + slides.length) % slides.length;
+          updateCarousel();
+        }
+
+        updateCarousel(); // Show the first slide initially
+
+        // Auto-advance
+        setInterval(nextSlide, 7000); // Change slide every 7 seconds
+
+        // Swipe event listeners (for mobile)
+        carousel.addEventListener('swiped-left', nextSlide);
+        carousel.addEventListener('swiped-right', prevSlide);
+      });
+    </script>
+    <style>
+      /* Ensure carousel slides overlay correctly */
+      .carousel-slide {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        transition: opacity 1s ease-in-out; /* Smooth transition for fade */
+      }
+    </style>
   </head>
   <body>
     <div class="relative flex size-full min-h-screen flex-col bg-[#f9fbf9] group/design-root overflow-x-hidden" style='font-family: Manrope, "Noto Sans", sans-serif;'>
       <div class="layout-container flex h-full grow flex-col">
-        <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#ebf2e9] px-10 py-3">
+        <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#ebf2e9] px-4 py-3 md:px-10">
           <div class="flex items-center gap-4 text-[#121a0f]">
             <div class="size-4">
               <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -25,49 +75,97 @@
             </div>
             <h2 class="text-[#121a0f] text-lg font-bold leading-tight tracking-[-0.015em]">GF-Gartenservice</h2>
           </div>
-          <div class="flex flex-1 justify-end gap-8">
-            <div class="flex items-center gap-9">
+          <div class="flex flex-1 justify-end gap-4 md:gap-8">
+            <div class="hidden items-center gap-9 md:flex">
               <a class="text-[#121a0f] text-sm font-medium leading-normal" href="#">Services</a>
               <a class="text-[#121a0f] text-sm font-medium leading-normal" href="#">About Us</a>
               <a class="text-[#121a0f] text-sm font-medium leading-normal" href="#">Contact</a>
             </div>
             <button
-              class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#53d22c] text-[#121a0f] text-sm font-bold leading-normal tracking-[0.015em]"
+              data-ripple-light="true"
+              class="relative flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#53d22c] text-[#121a0f] text-sm font-bold leading-normal tracking-[0.015em] transition-all hover:shadow-lg focus:shadow-none active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
             >
               <span class="truncate">Unverbindliches Angebot erhalten</span>
             </button>
           </div>
         </header>
-        <div class="px-40 flex flex-1 justify-center py-5">
+        <div class="px-4 flex flex-1 justify-center py-5 md:px-10 lg:px-40">
           <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
             <div class="@container">
               <div class="@[480px]:p-4">
-                <div
-                  class="flex min-h-[480px] flex-col gap-6 bg-cover bg-center bg-no-repeat @[480px]:gap-8 @[480px]:rounded-lg items-start justify-end px-4 pb-10 @[480px]:px-10"
-                  style='background-image: linear-gradient(rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%), url("https://www.pexels.com/photo/847379/download/");'
-                >
-                  <div class="flex flex-col gap-2 text-left">
-                    <h1
-                      class="text-white text-4xl font-black leading-tight tracking-[-0.033em] @[480px]:text-5xl @[480px]:font-black @[480px]:leading-tight @[480px]:tracking-[-0.033em]"
-                    >
-                      Ihr Garten, meine Hilfe – GF-Gartenservice
-                    </h1>
-                    <h2 class="text-white text-sm font-normal leading-normal @[480px]:text-base @[480px]:font-normal @[480px]:leading-normal">
-                      Ich unterstütze Sie persönlich und zuverlässig bei allen Gartenarbeiten in Gifhorn und Umgebung. Ob Rasen mähen, Unkraut entfernen oder Hecken schneiden – ich
-                      helfe, wenn Ihnen die Zeit fehlt oder es körperlich schwerfällt.
-                    </h2>
-                  </div>
-                  <button
-                    class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 @[480px]:h-12 @[480px]:px-5 bg-[#53d22c] text-[#121a0f] text-sm font-bold leading-normal tracking-[0.015em] @[480px]:text-base @[480px]:font-bold @[480px]:leading-normal @[480px]:tracking-[0.015em]"
+                <div class="relative min-h-[480px] flex items-end overflow-hidden @[480px]:rounded-lg hero-carousel">
+                  <div
+                    class="carousel-slide bg-cover bg-center bg-no-repeat"
+                    style='background-image: linear-gradient(rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%), url("https://images.pexels.com/photos/847379/pexels-photo-847379.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");'
                   >
-                    <span class="truncate">Unverbindliches Angebot erhalten</span>
-                  </button>
+                    <div class="flex flex-col gap-2 text-left p-4 pb-10 @[480px]:px-10 @[480px]:pb-10 h-full justify-end">
+                      <h1
+                        class="text-white text-4xl font-black leading-tight tracking-[-0.033em] @[480px]:text-5xl @[480px]:font-black @[480px]:leading-tight @[480px]:tracking-[-0.033em]"
+                      >
+                        Ihr Garten, meine Hilfe – GF-Gartenservice
+                      </h1>
+                      <h2 class="text-white text-sm font-normal leading-normal @[480px]:text-base @[480px]:font-normal @[480px]:leading-normal">
+                        Ich unterstütze Sie persönlich und zuverlässig bei allen Gartenarbeiten in Gifhorn und Umgebung. Ob Rasen mähen, Unkraut entfernen oder Hecken schneiden – ich
+                        helfe, wenn Ihnen die Zeit fehlt oder es körperlich schwerfällt.
+                      </h2>
+                      <button
+                        data-ripple-light="true"
+                        class="relative flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#53d22c] text-[#121a0f] text-sm font-bold leading-normal tracking-[0.015em] @[480px]:h-12 @[480px]:px-5 @[480px]:text-base @[480px]:font-bold @[480px]:leading-normal @[480px]:tracking-[0.015em] transition-all hover:shadow-lg focus:shadow-none active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none w-fit"
+                      >
+                        <span class="truncate">Unverbindliches Angebot erhalten</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div
+                    class="carousel-slide bg-cover bg-center bg-no-repeat"
+                    style='background-image: linear-gradient(rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%), url("https://images.pexels.com/photos/1099679/pexels-photo-1099679.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"); display: none;'
+                  >
+                    <div class="flex flex-col gap-2 text-left p-4 pb-10 @[480px]:px-10 @[480px]:pb-10 h-full justify-end">
+                      <h1
+                        class="text-white text-4xl font-black leading-tight tracking-[-0.033em] @[480px]:text-5xl @[480px]:font-black @[480px]:leading-tight @[480px]:tracking-[-0.033em]"
+                      >
+                        Frische Ideen für Ihren Garten
+                      </h1>
+                      <h2 class="text-white text-sm font-normal leading-normal @[480px]:text-base @[480px]:font-normal @[480px]:leading-normal">
+                        Entdecken Sie, wie ich Ihren Außenbereich in eine grüne Oase verwandeln kann, die perfekt zu Ihnen passt.
+                      </h2>
+                      <button
+                        data-ripple-light="true"
+                        class="relative flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#53d22c] text-[#121a0f] text-sm font-bold leading-normal tracking-[0.015em] @[480px]:h-12 @[480px]:px-5 @[480px]:text-base @[480px]:font-bold @[480px]:leading-normal @[480px]:tracking-[0.015em] transition-all hover:shadow-lg focus:shadow-none active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none w-fit"
+                      >
+                        <span class="truncate">Mehr erfahren</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div
+                    class="carousel-slide bg-cover bg-center bg-no-repeat"
+                    style='background-image: linear-gradient(rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%), url("https://images.pexels.com/photos/440731/pexels-photo-440731.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"); display: none;'
+                  >
+                    <div class="flex flex-col gap-2 text-left p-4 pb-10 @[480px]:px-10 @[480px]:pb-10 h-full justify-end">
+                      <h1
+                        class="text-white text-4xl font-black leading-tight tracking-[-0.033em] @[480px]:text-5xl @[480px]:font-black @[480px]:leading-tight @[480px]:tracking-[-0.033em]"
+                      >
+                        Professionelle Pflege, Persönlicher Touch
+                      </h1>
+                      <h2 class="text-white text-sm font-normal leading-normal @[480px]:text-base @[480px]:font-normal @[480px]:leading-normal">
+                        Verlassen Sie sich auf meine Expertise für einen Garten, der immer gepflegt aussieht.
+                      </h2>
+                      <button
+                        data-ripple-light="true"
+                        class="relative flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#53d22c] text-[#121a0f] text-sm font-bold leading-normal tracking-[0.015em] @[480px]:h-12 @[480px]:px-5 @[480px]:text-base @[480px]:font-bold @[480px]:leading-normal @[480px]:tracking-[0.015em] transition-all hover:shadow-lg focus:shadow-none active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none w-fit"
+                      >
+                        <span class="truncate">Termin vereinbaren</span>
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
             <h2 class="text-[#121a0f] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Our Services</h2>
             <div class="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3 p-4">
-              <div class="flex flex-1 gap-3 rounded-lg border border-[#d6e5d2] bg-[#f9fbf9] p-4 items-center">
+              <div class="flex flex-1 gap-3 rounded-xl border border-[#d6e5d2] bg-[#f9fbf9] p-4 items-center shadow-md">
                 <div class="text-[#121a0f]" data-icon="TreePalm" data-size="24px" data-weight="regular">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
                     <path
@@ -77,7 +175,7 @@
                 </div>
                 <h2 class="text-[#121a0f] text-base font-bold leading-tight">Rasen Mähen</h2>
               </div>
-              <div class="flex flex-1 gap-3 rounded-lg border border-[#d6e5d2] bg-[#f9fbf9] p-4 items-center">
+              <div class="flex flex-1 gap-3 rounded-xl border border-[#d6e5d2] bg-[#f9fbf9] p-4 items-center shadow-md">
                 <div class="text-[#121a0f]" data-icon="Plant" data-size="24px" data-weight="regular">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
                     <path
@@ -87,7 +185,7 @@
                 </div>
                 <h2 class="text-[#121a0f] text-base font-bold leading-tight">Unkraut Entfernen</h2>
               </div>
-              <div class="flex flex-1 gap-3 rounded-lg border border-[#d6e5d2] bg-[#f9fbf9] p-4 items-center">
+              <div class="flex flex-1 gap-3 rounded-xl border border-[#d6e5d2] bg-[#f9fbf9] p-4 items-center shadow-md">
                 <div class="text-[#121a0f]" data-icon="Scissors" data-size="24px" data-weight="regular">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
                     <path
@@ -104,14 +202,26 @@
               Rasenmähen, Unkraut entfernen, Heckenschnitt und mehr, alles mit einer persönlichen Note.
             </p>
             <div class="flex w-full grow bg-[#f9fbf9] @container p-4">
-              <div class="w-full gap-1 overflow-hidden bg-[#f9fbf9] @[480px]:gap-2 aspect-[3/2] rounded-lg grid grid-cols-[2fr_1fr_1fr]">
+              <div class="w-full gap-1 overflow-hidden bg-[#f9fbf9] @[480px]:gap-2 aspect-[3/2] rounded-lg grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] md:grid-cols-[2fr_1fr_1fr] lg:grid-cols-[2fr_1fr_1fr]">
                 <div
-                  class="w-full bg-center bg-no-repeat bg-cover aspect-auto rounded-none row-span-2"
-                  style='background-image: url("https://www.pexels.com/photo/440731/download/");'
+                  class="w-full bg-center bg-no-repeat bg-cover aspect-auto rounded-xl row-span-2 shadow-md"
+                  style='background-image: url("https://images.pexels.com/photos/1072179/pexels-photo-1072179.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");'
                 ></div>
                 <div
-                  class="w-full bg-center bg-no-repeat bg-cover aspect-auto rounded-none col-span-2 row-span-2"
-                  style='background-image: url("https://www.pexels.com/photo/1099679/download/");'
+                  class="w-full bg-center bg-no-repeat bg-cover aspect-auto rounded-xl shadow-md"
+                  style='background-image: url("https://images.pexels.com/photos/1768484/pexels-photo-1768484.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");'
+                ></div>
+                <div
+                  class="w-full bg-center bg-no-repeat bg-cover aspect-auto rounded-xl shadow-md"
+                  style='background-image: url("https://images.pexels.com/photos/1770284/pexels-photo-1770284.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");'
+                ></div>
+                <div
+                  class="w-full bg-center bg-no-repeat bg-cover aspect-auto rounded-xl shadow-md"
+                  style='background-image: url("https://images.pexels.com/photos/332155/pexels-photo-332155.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");'
+                ></div>
+                <div
+                  class="w-full bg-center bg-no-repeat bg-cover aspect-auto rounded-xl shadow-md"
+                  style='background-image: url("https://images.pexels.com/photos/459654/pexels-photo-459654.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");'
                 ></div>
               </div>
             </div>
@@ -129,7 +239,7 @@
                 </p>
               </div>
               <div class="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3 p-0">
-                <div class="flex flex-1 gap-3 rounded-lg border border-[#d6e5d2] bg-[#f9fbf9] p-4 flex-col">
+                <div class="flex flex-1 gap-3 rounded-xl border border-[#d6e5d2] bg-[#f9fbf9] p-4 flex-col shadow-md">
                   <div class="text-[#121a0f]" data-icon="Money" data-size="24px" data-weight="regular">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
                       <path
@@ -142,7 +252,7 @@
                     <p class="text-[#639155] text-sm font-normal leading-normal">Mein Service ist eine preiswerte Alternative zum klassischen Gärtner.</p>
                   </div>
                 </div>
-                <div class="flex flex-1 gap-3 rounded-lg border border-[#d6e5d2] bg-[#f9fbf9] p-4 flex-col">
+                <div class="flex flex-1 gap-3 rounded-xl border border-[#d6e5d2] bg-[#f9fbf9] p-4 flex-col shadow-md">
                   <div class="text-[#121a0f]" data-icon="Users" data-size="24px" data-weight="regular">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
                       <path
@@ -155,7 +265,7 @@
                     <p class="text-[#639155] text-sm font-normal leading-normal">Ich unterstütze Sie persönlich und zuverlässig bei allen Gartenarbeiten.</p>
                   </div>
                 </div>
-                <div class="flex flex-1 gap-3 rounded-lg border border-[#d6e5d2] bg-[#f9fbf9] p-4 flex-col">
+                <div class="flex flex-1 gap-3 rounded-xl border border-[#d6e5d2] bg-[#f9fbf9] p-4 flex-col shadow-md">
                   <div class="text-[#121a0f]" data-icon="Clock" data-size="24px" data-weight="regular">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
                       <path
@@ -185,7 +295,8 @@
                 <div class="flex flex-1 justify-center">
                   <div class="flex justify-center">
                     <button
-                      class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 @[480px]:h-12 @[480px]:px-5 bg-[#53d22c] text-[#121a0f] text-sm font-bold leading-normal tracking-[0.015em] @[480px]:text-base @[480px]:font-bold @[480px]:leading-normal @[480px]:tracking-[0.015em] grow"
+                      data-ripple-light="true"
+                      class="relative flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 @[480px]:h-12 @[480px]:px-5 bg-[#53d22c] text-[#121a0f] text-sm font-bold leading-normal tracking-[0.015em] @[480px]:text-base @[480px]:font-bold @[480px]:leading-normal @[480px]:tracking-[0.015em] grow transition-all hover:shadow-lg focus:shadow-none active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                     >
                       <span class="truncate">Unverbindliches Angebot erhalten</span>
                     </button>
